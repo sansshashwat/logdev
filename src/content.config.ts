@@ -22,10 +22,9 @@ const marginalia = defineCollection({
 	schema: z.object({
 		type: z.enum(['image', 'quote', 'link', 'note']),
 		title: z.string(),
-		date: z.coerce.date(),
-		description: z.string().optional(),
 		image: z.string().optional(),
 		link: z.string().url().optional(),
+		source: z.string().optional(),
 	}),
 });
 

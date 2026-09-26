@@ -1,12 +1,62 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 ---
+<img src="saturn1.jpg" class="saturn-image" alt="" />
+
+<style> .saturn-image {
+  position: absolute;
+  right: 0%;
+  top: 40%;
+  transform: translateY(-49%);
+  width: 50%;
+  opacity: 0.08;
+  pointer-events: none;
+}</style>
+
 
 <SiteLayout title="index" description="A small corner of the internet belonging to s. shashwat.">
 	<section class="hero">
 		<div class="hero-copy">
 			<h1>s. shashwat<button class="dot-trigger" type="button" aria-label="A small game is hidden here" data-dot-trigger>.</button></h1>
-			<p class="intro">A place for the things I think about,<br />the things I make, and the things I refuse to forget.</p>
+			
+			<p class="intro">
+    it's all romanticism, nonsense, art. sunlight that looks warm but isn't.
+    bongchie. 4 hours of sleep. whats carrying you through this? saturnine.
+    oranges. "kaate chahe jitna paron se hawaaon ko, khud se naa bach paayega tu."
+    bad decisions. navy and ivory. old paper. words collected because they taste
+    good in the mouth. lip balm in every bag. caffeine knowing you will regret it 
+    at 2 am. <br/> 2 am anyway. your favourite black jacket. the jeans that look better
+    after they've gotten old. the absurd seriousness of becoming someone. the even
+    greater absurdity of becoming someone while still being eighteen.
+    "kangana tera sacch bolda husn diye sarkare" chai gone cold beside a textbook.
+    the exact blue of 6:14 in the evening. a message you reread because you wanted
+    it to mean something else. softness without surrender. ambition without becoming
+    cruel. love without disappearing inside it. <br/> coffee on an empty stomach.
+    disposable camera flash. grain on someone's face. a broken kodak film cam.
+    a perfume bottle with no name on it. rating a film four stars because of one
+    shot. a guitar leaning against the bed. calluses where the strings used to hurt.<br/>
+    you don't notice them forming. one day you just press down on a string and
+    realize it doesn't hurt anymore. a CD with someone's handwriting on it.
+    wired headphones. the last good photograph before everyone got good cameras.
+    1979 x 2029. fogged windows. <br/>silver rings catching sunlight through the
+    windshield. a warm steering wheel. their feet on your dash. the particular
+    smell of your car. soft rock. indie pop. "but if you're too drunk to drive,
+    and the music is right". irshad kamil. gulzar. sunset in a city you've never
+    lived in yet. a receipt kept for no reason. a highway empty enough to feel
+    fictional. 120 in a 100. pune mumbai expressway. loving so hard your chest
+    hurts. what kind of person buys a lighter even though they don't smoke?
+    an unlit cigarette between your fingers "it's a metaphor". wet roads.
+    crowded corners. a very long silence. lazy mornings. whispered names.
+    verb for kissing someone repeatedly and softly. belonging. i knew your hand
+    before i knew what to call us. balcony conversations. devotion. vulnerability.
+    choosing. being chosen. traces of their scent. 4:37 am airports. the sound
+    of wheels over tile. who were you before you boarded? <br/> who are you allowed to
+    become after you land? home. ck one. shorts with perfectly proportioned
+    drawstrings. nirvana. smoking as choreography. as cinema. as silhouette
+    something you'll probably always find cool even if you never want the life
+    that comes with it. a sentence you meant enough to put under your skin.
+    deranged. i wish you a kinder sea.
+</p>
 		</div>
 
 		<div class="dot-game" data-dot-game aria-hidden="true">
@@ -39,7 +89,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 				/>
 
 				<div class="track-info">
-					<span class="eyebrow">a small offering</span>
+					<span class="eyebrow">here's one of my fav songs (for scrolling so far)</span>
 					<strong>Selfless</strong>
 					<small>The Strokes</small>
 				</div>
@@ -83,7 +133,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
 			<a
 				class="song-link"
-				href="https://open.spotify.com/"
+				href="https://open.spotify.com/track/2t0wwvR15fc3K1ey8OiOaN"
 				target="_blank"
 				rel="noreferrer"
 				aria-label="Open song in Spotify"
@@ -112,11 +162,11 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
 	h1 {
 		font-family: var(--serif);
-		font-size: clamp(82px, 14vw, 210px);
+		font-size: clamp(76px, 12.5vw, 190px);
 		line-height: 0.82;
 		font-weight: 400;
 		letter-spacing: -0.055em;
-		margin: 28px 0 36px;
+		margin: 99px 0 42px;
 	}
 
 	h1 .dot-trigger {
@@ -141,10 +191,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 	}
 
 	.intro {
-		color: var(--muted);
-		line-height: 1.8;
-		font-size: 14px;
+		font-family: 'Yuyu', sans-serif !important;
+		color:rgb(255, 255, 241);
+	    line-height: 1.35;
+	    font-size: 25px;
 		margin: 0;
+		max-width: 80%;
 	}
 
 	.home-easter-eggs {
@@ -216,7 +268,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
 	.egg-here {
 		position: absolute;
-		top: 56%;
+		top: 66%;
 		width: 100%;
 	}
 
@@ -338,12 +390,15 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 	}
 
 	.dot-game {
-		position: absolute;
-		z-index: 2;
-		inset: 0;
-		display: none;
-		background: transparent;
-	}
+    position: fixed;
+    z-index: 2;
+    top: 96px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    background: transparent;
+    }
 
 	.dot-game.is-playing {
 		display: block;
@@ -357,8 +412,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
 	.game-message {
 		position: absolute;
-		top: 50%;
-		left: 72%;
+		top: 30%;
+		left: 80%;
 		transform: translate(-50%, -50%);
 		width: max-content;
 		margin: 0;
@@ -410,61 +465,24 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 	}
 
 	@media (max-width: 620px) {
-		.hero {
-			min-height: calc(100vh - 78px);
-		}
+    .hero { min-height: calc(100vh - 78px); }
+    .hero::before { width: 90vw; height: 90vw; right: -35vw; top: 25%; }
+    h1 { font-size: clamp(72px, 23vw, 140px); }
+    .egg-book { top: 25%; padding: 0 24px; line-height: 1.8; }
+    .egg-here { top: 54%; }
+    .music-player { top: 92%; grid-template-columns: 1fr; gap: 16px; padding: 16px 0; }
+    .player-main { gap: 12px; }
+    .record-art { width: 56px; height: 56px; }
+    .track-info strong { font-size: 21px; }
+    .player-controls { justify-content: center; }
+    .song-link { display: block; }
+    .game-message { left: 70%; }
+    .game-hint { right: 12px; bottom: 14px; }
 
-		h1 {
-			font-size: clamp(72px, 23vw, 140px);
-		}
-
-		.egg-book {
-			top: 25%;
-			padding: 0 24px;
-			line-height: 1.8;
-		}
-
-		.egg-here {
-			top: 54%;
-		}
-
-		.music-player {
-			top: 92%;
-			grid-template-columns: 1fr;
-			gap: 16px;
-			padding: 16px 0;
-		}
-
-		.player-main {
-			gap: 12px;
-		}
-
-		.record-art {
-			width: 56px;
-			height: 56px;
-		}
-
-		.track-info strong {
-			font-size: 21px;
-		}
-
-		.player-controls {
-			justify-content: center;
-		}
-
-		.song-link {
-			display: block;
-		}
-
-		.game-message {
-			left: 68%;
-		}
-
-		.game-hint {
-			right: 12px;
-			bottom: 14px;
-		}
-	}
+    .dot-game {
+        top: 80px;
+    }
+}
 </style>
 
 <script>
@@ -623,9 +641,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 	let paddleX = 0;
 	let ballX = 0;
 	let ballY = 0;
-	let ballVelocityX = 250;
-	let ballVelocityY = -250;
-	let ballSpeed = 250;
+	let ballVelocityX = 2000;
+	let ballVelocityY = -2000;
+	let ballSpeed = 2000;
 
 	const paddleWidth = 160;
 	const paddleHeight = 3;
@@ -838,7 +856,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 				(ballX - (paddleX + paddleWidth / 2)) /
 				(paddleWidth / 2);
 
-			ballSpeed = Math.min(700, ballSpeed + 20);
+			ballSpeed = Math.min(700, ballSpeed + 120);
 
 			const reboundAngle =
 				paddleOffset * 0.85 +

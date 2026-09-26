@@ -4,19 +4,28 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 
 const posts = await getCollection('blogs');
 
-posts.sort(
+const sortedPosts = posts.sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
-const readingTimes = new Map<string, number>();
+const getReadingTime = (body: string | undefined) => {
+	if (!body) return '1 min read';
 
-for (const post of posts) {
-	const text = post.body ?? '';
-	const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-	const minutes = Math.max(1, Math.ceil(wordCount / 200));
+	const words = body.trim().split(/\s+/).length;
+	const minutes = Math.max(1, Math.ceil(words / 200));
 
-	readingTimes.set(post.id, minutes);
-}
+	return `${minutes} min read`;
+};
+
+const formatDate = (date: Date) => {
+	return date
+		.toLocaleDateString('en-GB', {
+			day: '2-digit',
+			month: '2-digit',
+			year: '2-digit',
+		})
+		.replaceAll('/', '.');
+};
 ---
 
 <SiteLayout title="library" description="Essays and notes by s. shashwat.">
@@ -33,7 +42,7 @@ for (const post of posts) {
 	</section>
 
 	<section class="essay-list" aria-label="Essays">
-		{posts.map((post, index) => (
+		{sortedPosts.map((post, index) => (
 			<a class="essay" href={`/library/${post.id}/`}>
 				<span class="essay-number">
 					{String(index + 1).padStart(2, '0')}
@@ -48,21 +57,19 @@ for (const post of posts) {
 				</div>
 
 				<div class="essay-meta">
-					<span>
-						{post.data.date.toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: '2-digit',
-						})}
-					</span>
-
-					<span>{readingTimes.get(post.id)} min read</span>
-
+					<span>{formatDate(post.data.date)}</span>
+					<span>{getReadingTime(post.body)}</span>
 					<span class="arrow">↗</span>
 				</div>
 			</a>
 		))}
 	</section>
+
+	{sortedPosts.length === 0 && (
+		<p class="empty-library">
+			nothing here yet.
+		</p>
+	)}
 
 	<p class="playlist-note">
 		looking for more songs?
@@ -90,8 +97,8 @@ for (const post of posts) {
 		font-family: var(--serif);
 		font-weight: 400;
 		font-size: clamp(80px, 14vw, 190px);
-		line-height: 0.78;
-		letter-spacing: -0.05em;
+		line-height: .78;
+		letter-spacing: -.05em;
 		margin: 31px 0 0 -0.05em;
 	}
 
@@ -113,9 +120,7 @@ for (const post of posts) {
 		align-items: start;
 		padding: 33px 0 36px;
 		border-bottom: 1px solid var(--line);
-		transition:
-			padding 250ms ease,
-			color 250ms ease;
+		transition: padding 250ms ease, color 250ms ease;
 	}
 
 	.essay:hover {
@@ -127,14 +132,14 @@ for (const post of posts) {
 	.essay-meta {
 		color: var(--faint);
 		font-size: 10px;
-		letter-spacing: 0.13em;
+		letter-spacing: .13em;
 	}
 
 	.essay-main h2 {
 		font-family: var(--serif);
 		font-weight: 400;
 		font-size: clamp(25px, 3vw, 38px);
-		letter-spacing: -0.02em;
+		letter-spacing: -.02em;
 		margin: -5px 0 10px;
 	}
 
@@ -164,11 +169,20 @@ for (const post of posts) {
 		transform: translate(4px, -4px);
 	}
 
+	.empty-library {
+		color: var(--faint);
+		text-align: center;
+		font-size: 11px;
+		letter-spacing: .12em;
+		text-transform: uppercase;
+		padding: 80px 0;
+	}
+
 	.playlist-note {
 		text-align: center;
 		color: var(--faint);
 		font-size: 10px;
-		letter-spacing: 0.12em;
+		letter-spacing: .12em;
 		text-transform: uppercase;
 		padding-top: 150px;
 	}
