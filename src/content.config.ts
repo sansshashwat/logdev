@@ -11,6 +11,14 @@ const blogs = defineCollection({
 		title: z.string(),
 		date: z.coerce.date(),
 		description: z.string().optional(),
+
+		song: z.object({
+       title: z.string(),
+       artist: z.string(),
+       cover: z.string(),
+       audio: z.string(),
+       spotify: z.string().url(),
+       }).optional(),
 	}),
 });
 

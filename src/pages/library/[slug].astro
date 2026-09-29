@@ -13,6 +13,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const titleHtml = post.data.title
+    .split(' | ')
+    .map((line) => line.trim())
+    .join('<br />');
+
 
 const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 	day: '2-digit',
@@ -27,19 +32,83 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 >
 	<article class="blog-post">
 		<header class="post-header">
-			<a class="back-link" href="/library/">← library</a>
+			
 
-			<p class="eyebrow">essay</p>
-
-			<h1>{post.data.title}</h1>
+			<h1 set:html={titleHtml}></h1>
 
 			<div class="post-meta">
 				<span>{formattedDate}</span>
 			</div>
 
-			{post.data.description && (
-				<p class="description">{post.data.description}</p>
-			)}
+		{post.data.song && (
+    <div class="music-player">
+        <div class="player-main">
+            <img
+                class="record-art"
+                src={post.data.song.cover}
+                alt={`${post.data.song.title} album cover`}
+            />
+
+            <div class="track-info">
+                <span class="eyebrow">here's one of my fav songs (for scrolling so far)</span>
+                <strong>{post.data.song.title}</strong>
+                <small>{post.data.song.artist}</small>
+            </div>
+        </div>
+
+        <div class="player-controls">
+            <button
+                class="control-button"
+                type="button"
+                aria-label="Rewind 10 seconds"
+                data-rewind
+            >↶</button>
+
+            <button
+                class="play-button"
+                type="button"
+                aria-label="Play favourite song"
+                data-play
+            ><span>▶</span></button>
+
+            <button
+                class="control-button"
+                type="button"
+                aria-label="Forward 10 seconds"
+                data-forward
+            >↷</button>
+        </div>
+
+        <div class="timeline-row">
+            <span data-current-time>0:00</span>
+            <input
+                type="range"
+                min="0"
+                max="100"
+                value="0"
+                aria-label="Song progress"
+                data-progress
+            />
+            <span data-duration>0:00</span>
+        </div>
+
+        <a
+            class="song-link"
+            href={post.data.song.spotify}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open song in Spotify"
+        >open in spotify ↗</a>
+
+        <audio
+            data-audio
+            preload="metadata"
+            src={post.data.song.audio}
+        ></audio>
+    </div>
+)}
+
+		
 		</header>
 
 		<div class="post-content">
@@ -47,20 +116,19 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 		</div>
 
 		<footer class="post-footer">
-			<a href="/library/">← back to library</a>
 		</footer>
 	</article>
 </SiteLayout>
 
 <style>
 	.blog-post {
-		max-width: 760px;
+		max-width: 1200px;
 		margin: 0 auto;
 		padding: 110px 0 140px;
 	}
 
 	.post-header {
-		padding-bottom: 70px;
+		padding-bottom: 30px;
 		border-bottom: 1px solid var(--line);
 	}
 
@@ -103,9 +171,10 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 	}
 
 	.post-content {
-		padding: 60px 0;
-		color: var(--muted);
-		font-size: 15px;
+		padding: 30px 0;
+		color: rgb(233, 230, 220);
+		font-size: 17px;
+		font-family: 'JetBrains Mono', monospace;
 		line-height: 2;
 	}
 
@@ -201,4 +270,196 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 			font-size: 14px;
 		}
 	}
+
+	.music-player {
+    position: relative;
+    width: min(100%, 570px);
+    margin: 35px auto 0;
+    padding: 10px 0 5px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px 22px;
+    align-items: center;
+}
+
+.player-main {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.record-art {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    background: #c69361;
+    color: #20231f;
+    display: block;
+    font-family: var(--serif);
+    border-radius: 0;
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.track-info strong {
+    font-family: var(--serif);
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.track-info small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.control-button,
+.play-button {
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: transparent;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.control-button {
+    font-size: 17px;
+    line-height: 1;
+}
+
+.play-button:hover,
+.play-button.is-playing,
+.control-button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--deep);
+}
+
+.play-button span {
+    font-size: 10px;
+}
+
+.timeline-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 34px 1fr 34px;
+    align-items: center;
+    gap: 10px;
+    color: var(--faint);
+    font-size: 10px;
+}
+
+.timeline-row input {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.song-link {
+    grid-column: 1 / -1;
+    color: var(--faint);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    transition: color 180ms ease;
+}
+
+.song-link:hover {
+    color: var(--accent);
+}
 </style>
+
+<script>
+    const audio = document.querySelector<HTMLAudioElement>('[data-audio]');
+    const playButton = document.querySelector<HTMLButtonElement>('[data-play]');
+    const progress = document.querySelector<HTMLInputElement>('[data-progress]');
+    const currentTime = document.querySelector('[data-current-time]');
+    const duration = document.querySelector('[data-duration]');
+
+    const formatTime = (seconds: number) =>
+        `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
+
+    const updateProgress = () => {
+        if (!audio) return;
+
+        const length = Number.isFinite(audio.duration) ? audio.duration : 0;
+
+        if (progress) {
+            progress.max = String(length || 100);
+            progress.value = String(audio.currentTime);
+        }
+
+        if (currentTime) currentTime.textContent = formatTime(audio.currentTime);
+        if (duration) duration.textContent = formatTime(length);
+    };
+
+    playButton?.addEventListener('click', () => {
+        if (!audio) return;
+
+        if (audio.paused) {
+            audio.play().catch(() => undefined);
+        } else {
+            audio.pause();
+        }
+    });
+
+    document
+        .querySelector<HTMLButtonElement>('[data-rewind]')
+        ?.addEventListener('click', () => {
+            if (audio) audio.currentTime = Math.max(0, audio.currentTime - 10);
+        });
+
+    document
+        .querySelector<HTMLButtonElement>('[data-forward]')
+        ?.addEventListener('click', () => {
+            if (audio) {
+                audio.currentTime = Math.min(
+                    audio.duration || 0,
+                    audio.currentTime + 10
+                );
+            }
+        });
+
+    progress?.addEventListener('input', () => {
+        if (audio) audio.currentTime = Number(progress.value);
+    });
+
+    audio?.addEventListener('timeupdate', updateProgress);
+    audio?.addEventListener('loadedmetadata', updateProgress);
+
+    audio?.addEventListener('play', () => {
+        playButton?.classList.add('is-playing');
+
+        if (playButton) {
+            playButton.setAttribute('aria-label', 'Pause favourite song');
+        }
+
+        const icon = playButton?.querySelector('span');
+        if (icon) icon.textContent = 'Ⅱ';
+    });
+
+    audio?.addEventListener('pause', () => {
+        playButton?.classList.remove('is-playing');
+
+        if (playButton) {
+            playButton.setAttribute('aria-label', 'Play favourite song');
+        }
+
+        const icon = playButton?.querySelector('span');
+        if (icon) icon.textContent = '▶';
+    });
+
+    updateProgress();
+</script>
